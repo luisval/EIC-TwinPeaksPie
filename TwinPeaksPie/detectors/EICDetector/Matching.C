@@ -17,9 +17,9 @@ void Matching::Loop(){
   if (fChain == 0) return;
   Long64_t nentries = fChain->GetEntriesFast();
    
-        TFile* fout = new TFile(Form("G4EICDetector_out_test.root"),"RECREATE");
+ //   TFile* fout = new TFile(Form("G4EICDetector_out_test.root"),"RECREATE");
 
-  //  TFile* fout = new TFile(Form("G4EICDetector_out_e_1-20GeV.root"),"RECREATE");
+    TFile* fout = new TFile(Form("G4EICDetector_out_pi_1-20GeV.root"),"RECREATE");
 
   // TFile *fout = new TFile("Ep_cut_revisited_G4EICDetector_out_hq2_k_1-20GeV.root","RECREATE");
 
@@ -115,7 +115,15 @@ void Matching::Loop(){
          
   TH2D *h_truth_p_track_p  = new TH2D("track_truth_p","track_p vs truth_p",100,0,20,100,0,20);
         h_truth_p_track_p->SetXTitle("track_p (GeV)");
-        h_truth_p_track_p->SetYTitle("truth_p (GeV)");      
+        h_truth_p_track_p->SetYTitle("truth_p (GeV)");     
+
+  TH1F *h_track_p_all = new TH1F("h_track_p_all","Track p all",40,0,20);
+        h_track_p_all->SetFillColorAlpha(40, 0.35);
+        h_track_p_all->SetXTitle("track_p");
+        h_track_p_all->SetYTitle("Counts");
+        h_track_p_all->GetXaxis()->CenterTitle(true);
+        h_track_p_all->GetYaxis()->CenterTitle(true);
+        h_track_p_all->GetYaxis()->SetTitleOffset(1.2);        
               
    Long64_t nbytes = 0, nb = 0;
 
@@ -149,14 +157,19 @@ void Matching::Loop(){
          // if(abs(track_p->at(j))<10) continue;
       //   cout << "track p:  " << track_p->at(j)<< endl;
 
+         if (track_id->at(j)==-211) {   //All pions
+       //  if (track_id->at(j)!=-321) { //All kaons
+            h_track_p_all->Fill(track_p->at(j)); 
+           // cout << "pid:  " << track_id->at(j) << endl;
+          }
+
          // dR and resolutions
          int idx_dR, idx_dEta, idx_dPhi, dummy, idx_dR_tow, idx_dR_track;
         
-        if (tr_CEMC_eta->at(j)==9999.) continue;
-
+         if (tr_CEMC_eta->at(j)==9999.) continue;
           
-           if (track_id->at(j)!=11) continue; //Turn on for electrons
-        // if (track_id->at(j)!=-211) continue; //Turn on for pions
+       //    if (track_id->at(j)!=11) continue; //Turn on for electrons
+         if (track_id->at(j)!=-211) continue; //Turn on for pions
         //  if (track_id->at(j)!=-321) continue; //Turn on for kaons
 
        //   if ( track_id->at(j)!=11 && track_id->at(j)!=-211 && track_id->at(j)!=-321 ) continue;     
@@ -173,7 +186,7 @@ void Matching::Loop(){
         if( dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) > 0.07) continue; //dR cut clusters_tracks
       //  cout << "dR:  " << dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) << endl;
 
-                   cout << "pid:  " << track_id->at(j) << endl;
+                //   cout << "pid:  " << track_id->at(j) << endl;
 
        //  idx_dR  =0;
        //  h_dRmin->Fill( dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) ); //Tracks-clusters
@@ -229,6 +242,8 @@ h_dRmin_tow->Write();
 h_track_p->Write();
 h_track_pt->Write();
 h_track_eta->Write();
+
+h_track_p_all->Write();
 
 h_truth_p->Write();
 h_truth_p_track_p->Write();

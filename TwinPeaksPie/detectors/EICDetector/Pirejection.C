@@ -64,6 +64,36 @@ TFile *file4 = TFile::Open("G4EICDetector_out_low_pi_1-20GeV.root");
         h4_EMCal_Ep->SetLineColor(1);
         h4_EMCal_Ep->SetLineWidth(6);  
 
+////////////Total pions (or kaons)////////////////////////////////////// 
+  TH1F *h1_track_p_all = (TH1F*)file1->Get("h_track_p_all");
+        h1_track_p_all->GetXaxis()->SetTitle("track p");
+        h1_track_p_all->GetYaxis()->SetTitle("Counts");
+        h1_track_p_all->SetFillColor(0); 
+        h1_track_p_all->SetLineColor(1);
+        h1_track_p_all->SetLineWidth(6);  
+
+  TH1F *h2_track_p_all = (TH1F*)file2->Get("h_track_p_all");
+        h2_track_p_all->GetXaxis()->SetTitle("track p");
+        h2_track_p_all->GetYaxis()->SetTitle("Counts");
+        h2_track_p_all->SetFillColor(0); 
+        h2_track_p_all->SetLineColor(1);
+        h2_track_p_all->SetLineWidth(6);  
+
+  TH1F *h3_track_p_all = (TH1F*)file3->Get("h_track_p_all");
+        h3_track_p_all->GetXaxis()->SetTitle("track p");
+        h3_track_p_all->GetYaxis()->SetTitle("Counts");
+        h3_track_p_all->SetFillColor(0); 
+        h3_track_p_all->SetLineColor(1);
+        h3_track_p_all->SetLineWidth(6);  
+
+  TH1F *h4_track_p_all = (TH1F*)file4->Get("h_track_p_all");
+        h4_track_p_all->GetXaxis()->SetTitle("track p");
+        h4_track_p_all->GetYaxis()->SetTitle("Counts");
+        h4_track_p_all->SetFillColor(0); 
+        h4_track_p_all->SetLineColor(1);
+        h4_track_p_all->SetLineWidth(6);
+
+/////////////////////////////////////////////////////
         Int_t nbinsh1 = h1_EMCal_Ep->Integral();
         Int_t nbinsh2 = h2_EMCal_Ep->Integral();
         Int_t nbinsh3 = h3_EMCal_Ep->Integral();
@@ -71,10 +101,10 @@ TFile *file4 = TFile::Open("G4EICDetector_out_low_pi_1-20GeV.root");
 
       //h1_EMCal_Ep->Scale(1./(h1_EMCal_Ep)->Integral());
  
-        float totalIntegral_pi1 = h1_EMCal_Ep->Integral(h1_EMCal_Ep->FindFixBin(0), h1_EMCal_Ep->FindFixBin(2));
-        float totalIntegral_pi2 = h2_EMCal_Ep->Integral(h2_EMCal_Ep->FindFixBin(0), h2_EMCal_Ep->FindFixBin(2));
-        float totalIntegral_pi3 = h3_EMCal_Ep->Integral(h3_EMCal_Ep->FindFixBin(0), h3_EMCal_Ep->FindFixBin(2));
-        float totalIntegral_pi4 = h4_EMCal_Ep->Integral(h4_EMCal_Ep->FindFixBin(0), h4_EMCal_Ep->FindFixBin(2));
+        float totalIntegral_pi1 = h1_track_p_all->Integral(h1_track_p_all->FindFixBin(0), h1_track_p_all->FindFixBin(20));
+        float totalIntegral_pi2 = h2_track_p_all->Integral(h2_track_p_all->FindFixBin(0), h2_track_p_all->FindFixBin(20));
+        float totalIntegral_pi3 = h3_track_p_all->Integral(h3_track_p_all->FindFixBin(0), h3_track_p_all->FindFixBin(20));
+        float totalIntegral_pi4 = h4_track_p_all->Integral(h4_track_p_all->FindFixBin(0), h4_track_p_all->FindFixBin(20));
 
        float pi_cut1 = h1_EMCal_Ep->Integral(h1_EMCal_Ep->FindFixBin(0.86), h1_EMCal_Ep->FindFixBin(2));
        float pi_cut2 = h2_EMCal_Ep->Integral(h2_EMCal_Ep->FindFixBin(0.92), h2_EMCal_Ep->FindFixBin(2));
@@ -111,7 +141,7 @@ TCanvas *c2 = new TCanvas("c2","#pi^{-} rejection ",200,10,500,300);
   TGraph* gr4 = new TGraph();
 
   TMultiGraph *mg = new TMultiGraph();
-      mg->SetTitle("#pi^{-} vs rejection;p_{max}(GeV); #pi^{-} rejection");
+      mg->SetTitle("#pi^{-} rejection;p_{max}(GeV); #pi^{-} rejection");
       mg->GetXaxis()->SetLimits(0.1, 1.02);
       mg->GetXaxis()->SetTitleOffset(1.2);
       mg->GetYaxis()->SetTitleOffset(1.2);
