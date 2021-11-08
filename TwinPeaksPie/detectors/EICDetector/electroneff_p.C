@@ -121,16 +121,16 @@ TFile *file4 = TFile::Open("Ep_cut_revisited_G4EICDetector_out_hq2_k_5-10GeV.roo
         Int_t nbintstotal = nbinsh1+nbinsh2+nbinsh3+nbinsh4;
 
         float totalIntegral1 = h1_EMCal_Ep_tot->Integral(h1_EMCal_Ep_tot->FindFixBin(0.), h1_EMCal_Ep_tot->FindFixBin(2));    
-        float rangeIntegral1 = h1_EMCal_Ep->Integral(h1_EMCal_Ep->FindFixBin(0.8), h1_EMCal_Ep->FindFixBin(2)); 
+        float rangeIntegral1 = h1_EMCal_Ep->Integral(h1_EMCal_Ep->FindFixBin(0.86), h1_EMCal_Ep->FindFixBin(2)); 
 
         float totalIntegral2 = h2_EMCal_Ep_tot->Integral(h2_EMCal_Ep_tot->FindFixBin(0), h2_EMCal_Ep_tot->FindFixBin(2));       
-        float rangeIntegral2 = h2_EMCal_Ep->Integral(h2_EMCal_Ep->FindFixBin(0.75), h2_EMCal_Ep->FindFixBin(2));
+        float rangeIntegral2 = h2_EMCal_Ep->Integral(h2_EMCal_Ep->FindFixBin(0.92), h2_EMCal_Ep->FindFixBin(2));
 
         float totalIntegral3 = h3_EMCal_Ep_tot->Integral(h3_EMCal_Ep_tot->FindFixBin(0), h3_EMCal_Ep_tot->FindFixBin(2));
-        float rangeIntegral3 = h3_EMCal_Ep->Integral(h3_EMCal_Ep->FindFixBin(0.75), h3_EMCal_Ep->FindFixBin(2));
+        float rangeIntegral3 = h3_EMCal_Ep->Integral(h3_EMCal_Ep->FindFixBin(0.90), h3_EMCal_Ep->FindFixBin(2));
 
         float totalIntegral4 = h4_EMCal_Ep_tot->Integral(h4_EMCal_Ep_tot->FindFixBin(0), h3_EMCal_Ep_tot->FindFixBin(2));
-        float rangeIntegral4 = h4_EMCal_Ep->Integral(h4_EMCal_Ep->FindFixBin(0.75), h4_EMCal_Ep->FindFixBin(2));
+        float rangeIntegral4 = h4_EMCal_Ep->Integral(h4_EMCal_Ep->FindFixBin(0.91), h4_EMCal_Ep->FindFixBin(2));
 
         float eff1= rangeIntegral1/(totalIntegral1); 
         float eff2= rangeIntegral2/(totalIntegral2); 
@@ -173,22 +173,75 @@ TFile *file4 = TFile::Open("Ep_cut_revisited_G4EICDetector_out_hq2_k_5-10GeV.roo
   c1->BuildLegend();
   c1->SaveAs("Ep_pie.pdf");
    
+///////////////////////////////////////////////////////////////////////////////////////////////////
+//TCanvas *c2 = new TCanvas("c2","#e^{-} efficiency",200,10,500,300);
+TCanvas *c2 = new TCanvas("c2","#e^{-} efficiency");
+  TGraph* gr1 = new TGraph();
+  TGraph* gr2 = new TGraph();
+  TGraph* gr3 = new TGraph();
+  TGraph* gr4 = new TGraph();
 
-TCanvas *c2 = new TCanvas("c5","Efficiency of #e^{-},  #pi^{-}, and #k^{-} ",200,10,500,300);
+  TMultiGraph *mg = new TMultiGraph();
+      mg->SetTitle("e^{-} efficiency;p_max (GeV); Efficiency");
+      mg->GetXaxis()->CenterTitle();
+      mg->GetYaxis()->CenterTitle();      
+     // mg->GetXaxis()->SetLimits(1, 21);
 
-TGraph *gr = new TGraph();
-   gr->SetTitle("e^{-} p vs efficiency;p_max (GeV); Efficiency");
-   gr->SetPoint(0,1.0,eff1);
-   gr->SetPoint(1,5.0,eff2);
-   gr->SetPoint(2,10.0,eff3);
-   gr->SetPoint(3,20.0,eff4);
-   gr->SetMarkerStyle(20);
-   gr->Draw("AP");
+    TAxis *axis1 = gr1->GetXaxis();
+    axis1->SetLimits(2,20.0); // along X
+
+    mg->Add(gr1,"");
+   // mg->Add(gr1,"ALP");
+    mg->Add(gr2,"");
+    mg->Add(gr3,"");
+    mg->Add(gr4,"");
+    mg->Draw("ap");
+     
+   gr1->SetName("gr1");
+   gr1->SetTitle("1 - 5 GeV");
+   gr1->SetMarkerStyle(21);
+   gr1->SetMarkerSize(2);
+  // gr1->SetLineColor(1);
+  // gr1->SetLineWidth(4);
+   gr1->SetFillStyle(0);
+ 
+   gr2->SetName("gr2");
+   gr2->SetTitle("5-10 GeV");
+   gr2->SetMarkerStyle(22);
+   gr2->SetMarkerColor(41);
+   gr2->SetMarkerSize(2);
+  // gr2->SetLineColor(41);
+  // gr2->SetLineWidth(4);
+   gr2->SetFillStyle(0);
+
+   gr3->SetName("gr3");
+   gr3->SetTitle("10-20 GeV");
+   gr3->SetMarkerStyle(23);
+   gr3->SetMarkerColor(46);
+   gr3->SetMarkerSize(2);
+  // gr3->SetLineColor(46);
+  // gr3->SetLineWidth(4);
+   gr3->SetFillStyle(0);
+
+   gr4->SetName("gr4");
+   gr4->SetTitle("1-20 GeV");
+   gr4->SetMarkerStyle(20);
+   gr4->SetMarkerColor(47);
+   gr4->SetMarkerSize(2);
+  // gr4->SetLineColor(49);
+  // gr4->SetLineWidth(4);
+   gr4->SetFillStyle(0);
+
+   gr1->SetPoint(0,5.0,eff1);
+   gr2->SetPoint(1,10.0,eff2);
+   gr3->SetPoint(2,20.0,eff3);
+   gr4->SetPoint(3,20.0,eff4);
+
 
   c2->BuildLegend();
   
-  c2->SaveAs("eff-1.pdf");
-
+  c2->SaveAs("eff-1.gif");
+ 
  ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
   cout<<"End of the program. Gracias"<<endl;

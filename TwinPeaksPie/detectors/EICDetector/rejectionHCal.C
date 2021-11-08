@@ -12,6 +12,18 @@
 Int_t rejectionHCal()
 {
 
+TFile *file1 = TFile::Open("G4EICDetector_out_pi_1-5GeV.root");
+TFile *file2 = TFile::Open("G4EICDetector_out_pi_5-10GeV.root");
+TFile *file3 = TFile::Open("G4EICDetector_out_pi_10-20GeV.root");
+TFile *file4 = TFile::Open("G4EICDetector_out_pi_1-20GeV.root");
+
+
+TFile *file01 = TFile::Open("Ep_cut_revisited_G4EICDetector_out_hq2_pi_1-5GeV.root");
+TFile *file02 = TFile::Open("Ep_cut_revisited_G4EICDetector_out_hq2_pi_5-10GeV.root");
+TFile *file03 = TFile::Open("Ep_cut_revisited_G4EICDetector_out_hq2_pi_10-20GeV.root");
+TFile *file04 = TFile::Open("Ep_cut_revisited_G4EICDetector_out_hq2_pi_1-20GeV.root");
+
+/*
 TFile *file1 = TFile::Open("Epcut_G4EICDetector_out_hq2_pi_0.5-1GeV.root");
 TFile *file2 = TFile::Open("Epcut_G4EICDetector_out_hq2_pi_1-2GeV.root");
 TFile *file3 = TFile::Open("Epcut_G4EICDetector_out_hq2_pi_2-5GeV.root");
@@ -22,6 +34,7 @@ TFile *file01 = TFile::Open("G4EICDetector_out_hq2_pi_0.5-1GeV.root");
 TFile *file02 = TFile::Open("G4EICDetector_out_hq2_pi_1-2GeV.root");
 TFile *file03 = TFile::Open("G4EICDetector_out_hq2_pi_2-5GeV.root");
 TFile *file04 = TFile::Open("G4EICDetector_out_hq2_pi_5-10GeV.root"); 
+*/
 
 /*
 TFile *file1 = TFile::Open("Epcut_G4EICDetector_out_hq2_k_0.5-1.0GeV.root");
@@ -161,7 +174,7 @@ TCanvas *c2 = new TCanvas("c5","rejection ",200,10,500,300);
   TGraph* gr4 = new TGraph();
 
   TMultiGraph *mg = new TMultiGraph();
-      mg->SetTitle("E_{min} vs rejection;E_{min}(GeV); rejection");
+      mg->SetTitle("P_{min} vs rejection;P_{min}(GeV); rejection");
       mg->GetXaxis()->SetLimits(0.1, 1.02);
       mg->GetXaxis()->SetTitleOffset(1.2);
       mg->GetYaxis()->SetTitleOffset(1.2);
@@ -179,7 +192,7 @@ TCanvas *c2 = new TCanvas("c5","rejection ",200,10,500,300);
     mg->Draw("ap");
      
    gr1->SetName("gr1");
-   gr1->SetTitle("0.5-1 GeV");
+   gr1->SetTitle("1-5 GeV");
    gr1->SetMarkerStyle(21);
    gr1->SetMarkerSize(2);
   // gr1->SetLineColor(1);
@@ -187,7 +200,7 @@ TCanvas *c2 = new TCanvas("c5","rejection ",200,10,500,300);
    gr1->SetFillStyle(0);
  
    gr2->SetName("gr2");
-   gr2->SetTitle("1-2 GeV");
+   gr2->SetTitle("5-10 GeV");
    gr2->SetMarkerStyle(22);
    gr2->SetMarkerColor(41);
    gr2->SetMarkerSize(2);
@@ -196,7 +209,7 @@ TCanvas *c2 = new TCanvas("c5","rejection ",200,10,500,300);
    gr2->SetFillStyle(0);
 
    gr3->SetName("gr3");
-   gr3->SetTitle("2-5 GeV");
+   gr3->SetTitle("10-20 GeV");
    gr3->SetMarkerStyle(23);
    gr3->SetMarkerColor(46);
    gr3->SetMarkerSize(2);
@@ -205,7 +218,7 @@ TCanvas *c2 = new TCanvas("c5","rejection ",200,10,500,300);
    gr3->SetFillStyle(0);
 
    gr4->SetName("gr4");
-   gr4->SetTitle("5-10 GeV");
+   gr4->SetTitle("1-20 GeV");
    gr4->SetMarkerStyle(20);
    gr4->SetMarkerColor(47);
    gr4->SetMarkerSize(2);
@@ -213,10 +226,10 @@ TCanvas *c2 = new TCanvas("c5","rejection ",200,10,500,300);
   // gr4->SetLineWidth(4);
    gr4->SetFillStyle(0);
 
-  gr1->SetPoint(1,0.1,rej1_pi);
-  gr2->SetPoint(2,0.2,rej2_pi);
-  gr3->SetPoint(3,0.3,rej3_pi);
-  gr4->SetPoint(4,0.4,rej4_pi);
+  gr1->SetPoint(1,5,rej1_pi);
+  gr2->SetPoint(2,10,rej2_pi);
+  gr3->SetPoint(3,20,rej3_pi);
+  gr4->SetPoint(4,20,rej4_pi);
 
   c2->BuildLegend();
 

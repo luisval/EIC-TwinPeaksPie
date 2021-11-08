@@ -14,23 +14,24 @@
 Int_t electroneff()
 {
 
-/*
+
 TFile *file1 = TFile::Open("G4EICDetector_out_e_1-5GeV.root");
 TFile *file2 = TFile::Open("G4EICDetector_out_e_5-10GeV.root");
 TFile *file3 = TFile::Open("G4EICDetector_out_e_10-20GeV.root");
 TFile *file4 = TFile::Open("G4EICDetector_out_e_1-20GeV.root");
-*/
+
   /*
 TFile *file1 = TFile::Open("G4EICDetector_out_pi_1-5GeV.root");
 TFile *file2 = TFile::Open("G4EICDetector_out_pi_5-10GeV.root");
 TFile *file3 = TFile::Open("G4EICDetector_out_pi_10-20GeV.root");
 TFile *file4 = TFile::Open("G4EICDetector_out_pi_1-20GeV.root");
 */
-
+/*
 TFile *file1 = TFile::Open("G4EICDetector_out_k_1-5GeV.root");
 TFile *file2 = TFile::Open("G4EICDetector_out_k_5-10GeV.root");
 TFile *file3 = TFile::Open("G4EICDetector_out_k_10-20GeV.root");
 TFile *file4 = TFile::Open("G4EICDetector_out_k_1-20GeV.root");
+*/
 
 /*
 TFile *file1 = TFile::Open("revisited_G4EICDetector_out_hq2_e_0.5-1.0GeV.root");
