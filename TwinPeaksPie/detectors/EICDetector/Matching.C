@@ -15,11 +15,11 @@ void Matching::Loop(){
 
   cout << "---Start of the program-----" << endl;
   if (fChain == 0) return;
-  Long64_t nentries = fChain->GetEntriesFast();
+  Long64_t nentries = fChain->GetEntries();
    
- //   TFile* fout = new TFile(Form("G4EICDetector_out_test.root"),"RECREATE");
+    TFile* fout = new TFile(Form("G4EICDetector_out_test.root"),"RECREATE");
 
-    TFile* fout = new TFile(Form("G4EICDetector_out_pi_1-20GeV.root"),"RECREATE");
+  //  TFile* fout = new TFile(Form("G4EICDetector_out_pi_1-20GeV.root"),"RECREATE");
 
   // TFile *fout = new TFile("Ep_cut_revisited_G4EICDetector_out_hq2_k_1-20GeV.root","RECREATE");
 
@@ -168,8 +168,8 @@ void Matching::Loop(){
         
          if (tr_CEMC_eta->at(j)==9999.) continue;
           
-       //    if (track_id->at(j)!=11) continue; //Turn on for electrons
-         if (track_id->at(j)!=-211) continue; //Turn on for pions
+           if (track_id->at(j)!=11) continue; //Turn on for electrons
+        // if (track_id->at(j)!=-211) continue; //Turn on for pions
         //  if (track_id->at(j)!=-321) continue; //Turn on for kaons
 
        //   if ( track_id->at(j)!=11 && track_id->at(j)!=-211 && track_id->at(j)!=-321 ) continue;     
@@ -186,7 +186,7 @@ void Matching::Loop(){
         if( dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) > 0.07) continue; //dR cut clusters_tracks
       //  cout << "dR:  " << dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) << endl;
 
-                //   cout << "pid:  " << track_id->at(j) << endl;
+             //      cout << "pid:  " << track_id->at(j) << endl;
 
        //  idx_dR  =0;
        //  h_dRmin->Fill( dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) ); //Tracks-clusters

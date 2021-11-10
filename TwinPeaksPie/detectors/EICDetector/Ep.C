@@ -14,30 +14,39 @@
 Int_t Ep()
 {
 
-
+/*
 TFile *file1 = TFile::Open("G4EICDetector_out_e_1-5GeV.root");
 TFile *file2 = TFile::Open("G4EICDetector_out_e_5-10GeV.root");
 TFile *file3 = TFile::Open("G4EICDetector_out_e_10-20GeV.root");
 TFile *file4 = TFile::Open("G4EICDetector_out_e_1-20GeV.root");
-
-  /*
+*/
+/*  
 TFile *file1 = TFile::Open("G4EICDetector_out_pi_1-5GeV.root");
 TFile *file2 = TFile::Open("G4EICDetector_out_pi_5-10GeV.root");
 TFile *file3 = TFile::Open("G4EICDetector_out_pi_10-20GeV.root");
 TFile *file4 = TFile::Open("G4EICDetector_out_pi_1-20GeV.root");
 */
-/*
+
 TFile *file1 = TFile::Open("G4EICDetector_out_k_1-5GeV.root");
 TFile *file2 = TFile::Open("G4EICDetector_out_k_5-10GeV.root");
 TFile *file3 = TFile::Open("G4EICDetector_out_k_10-20GeV.root");
 TFile *file4 = TFile::Open("G4EICDetector_out_k_1-20GeV.root");
-*/
+
        if (file1 && file2 && file3 && file4->IsZombie()) { cout << "Error opening a file" << endl;
        exit(-1);} 
        else {cout << "Files are okay" << endl;}
  
 //  gStyle->SetOptTitle(0); //No title for histograms
  // gStyle->SetOptStat(0);
+
+  TH1F *h_EMCal_Ep = (TH1F*)file4->Get("h_EMCal_Ep");
+        h_EMCal_Ep->GetXaxis()->SetTitle("Becal E/p");
+        h_EMCal_Ep->GetYaxis()->SetTitle("Counts");
+        h_EMCal_Ep->SetFillColor(0); 
+        h_EMCal_Ep->SetLineColor(49);
+        h_EMCal_Ep->SetLineWidth(3);  
+        h_EMCal_Ep->Rebin(2);        
+      //  h1_EMCal_Ep->GetYaxis()->SetRange(0,100);        
   
   TH1F *h1_EMCal_Ep = (TH1F*)file1->Get("h_EMCal_Ep");
         h1_EMCal_Ep->GetXaxis()->SetTitle("Becal E/p");
@@ -45,7 +54,7 @@ TFile *file4 = TFile::Open("G4EICDetector_out_k_1-20GeV.root");
         h1_EMCal_Ep->SetFillColor(0); 
         h1_EMCal_Ep->SetLineColor(49);
         h1_EMCal_Ep->SetLineWidth(3);  
-        h1_EMCal_Ep->Rebin(10);        
+        h1_EMCal_Ep->Rebin(2);        
       //  h1_EMCal_Ep->GetYaxis()->SetRange(0,100);   
 
   TH1F *h2_EMCal_Ep = (TH1F*)file2->Get("h_EMCal_Ep");
@@ -54,7 +63,7 @@ TFile *file4 = TFile::Open("G4EICDetector_out_k_1-20GeV.root");
         h2_EMCal_Ep->SetFillColor(0); 
         h2_EMCal_Ep->SetLineColor(49);
         h2_EMCal_Ep->SetLineWidth(3);  
-        h2_EMCal_Ep->Rebin(10);           
+        h2_EMCal_Ep->Rebin(2);      
        // h2_EMCal_Ep->GetYaxis()->SetRange(0,100);   
 
   TH1F *h3_EMCal_Ep = (TH1F*)file3->Get("h_EMCal_Ep");
@@ -63,9 +72,8 @@ TFile *file4 = TFile::Open("G4EICDetector_out_k_1-20GeV.root");
         h3_EMCal_Ep->SetFillColor(0);    
         h3_EMCal_Ep->SetLineColor(49);
         h3_EMCal_Ep->SetLineWidth(3);  
-        h3_EMCal_Ep->Rebin(10);       
+        h3_EMCal_Ep->Rebin(2);       
       //  h3_EMCal_Ep->GetYaxis()->SetRange(0,100);   
-    
    
   TH1F *h4_EMCal_Ep = (TH1F*)file4->Get("h_EMCal_Ep");
         h4_EMCal_Ep->GetXaxis()->SetTitle("Becal E/p");
@@ -73,12 +81,24 @@ TFile *file4 = TFile::Open("G4EICDetector_out_k_1-20GeV.root");
         h4_EMCal_Ep->SetFillColor(0);    
         h4_EMCal_Ep->SetLineColor(49);
         h4_EMCal_Ep->SetLineWidth(3);  
-        h4_EMCal_Ep->Rebin(10);    
+        h4_EMCal_Ep->Rebin(2);    
        // h4_EMCal_Ep->GetYaxis()->SetRange(0,100);   
        
 
-
   //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  TCanvas *c0 = new TCanvas("c0","Becal E/p");
+  //gStyle->SetOptStat(false);
+  c0->SetRightMargin(0.1);
+  c0->SetTopMargin(0.1);
+  c0->SetFillColor(0);
+  h_EMCal_Ep->SetTitle("1.0 - 20.0 GeV");
+
+   h_EMCal_Ep->SetStats(kFALSE);
+   h_EMCal_Ep->GetXaxis()->SetTitle("E/p");
+   h_EMCal_Ep->GetYaxis()->SetTitle("counts");
+   h_EMCal_Ep->Draw();
+
+
   TCanvas *c1 = new TCanvas("c1","Becal E/p");
   c1->Divide(2,2);
   c1->cd(1); 
