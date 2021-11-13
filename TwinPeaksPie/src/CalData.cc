@@ -633,6 +633,9 @@ bool becal_projection = false;
 
  // if(clusters) cout << "clusters size" << clusters->size() << endl;
 
+////////////////////////////////Vertex stuff//////////////////////////////////////////////
+  /*
+
   /// Get the global vertex to determine the appropriate pseudorapidity of the clusters
 
    SvtxVertexMap *vertexmap = findNode::getClass<SvtxVertexMap>(topNode, "SvtxVertexMap");
@@ -653,7 +656,9 @@ bool becal_projection = false;
 
   SvtxVertex* vtx = vertexmap->get(0);
   if (vtx == nullptr)
-    return;
+  return;
+*/
+/////////////////////////////////////////////////////////////////////////////////////////
 
   RawClusterContainer::ConstRange begin_end = clusters->getClusters();
   RawClusterContainer::ConstIterator clusIter;
@@ -666,8 +671,8 @@ bool becal_projection = false;
     /// Get this cluster
     const RawCluster *cluster = clusIter->second;
 
-
-  double m_ceta = getEta(cluster->get_r(),cluster->get_z()-vtx->get_z());
+  //double m_ceta = getEta(cluster->get_r(),cluster->get_z()-vtx->get_z()); //Vertex correction
+  double m_ceta = getEta(cluster->get_r(),cluster->get_z());
   double m_cphi = cluster->get_phi();
    
  //  if (E_vec_cluster.perp() < m_mincluspt) continue; //cut in pt, skip lower than 0.25 GeV ~ stupid noise
@@ -702,6 +707,7 @@ bool becal_projection = false;
     //if(clusters_hcal) cout << "clusters HCal size" << clusters_hcal->size() << endl;
 
 /////////////////////// Vertex stuff/////////////////////////////////////////////////////////////
+  /*
 // Get the global vertex to determine the appropriate pseudorapidity of the clusters
   SvtxVertexMap *vertexmap_hcal = findNode::getClass<SvtxVertexMap>(topNode, "SvtxVertexMap");
 
@@ -722,7 +728,7 @@ bool becal_projection = false;
   SvtxVertex* vtxh = vertexmap_hcal->get(0);
   if (vtxh == nullptr)
     return;
-
+*/
 ////////////////////////////////////////////////////////////////////////////////////////////////
   
   RawClusterContainer::ConstRange begin_end_h = clusters_hcal->getClusters();
@@ -737,7 +743,8 @@ bool becal_projection = false;
     const RawCluster *cluster_HCal = clusIter_h->second;
 
   /// Get cluster characteristics
-  double m_ceta_h = getEta(cluster_HCal->get_r(),cluster_HCal->get_z()-vtxh->get_z());
+  //double m_ceta_h = getEta(cluster_HCal->get_r(),cluster_HCal->get_z()-vtxh->get_z()); //vertex correction
+  double m_ceta_h = getEta(cluster_HCal->get_r(),cluster_HCal->get_z());
   double m_cphi_h = cluster_HCal->get_phi();
 
      m_clusenergy_HCal .push_back(cluster_HCal->get_energy());
@@ -762,6 +769,7 @@ RawClusterContainer *clusters_hcalout = findNode::getClass<RawClusterContainer>(
     //if(clusters_hcalout) cout << "clusters HCal size" << clusters_hcal->size() << endl;
 
 /////////////////////// Vertex stuff/////////////////////////////////////////////////////////////
+  /*
 // Get the global vertex to determine the appropriate pseudorapidity of the clusters
   SvtxVertexMap *vertexmap_hcalout = findNode::getClass<SvtxVertexMap>(topNode, "SvtxVertexMap");
   if (!vertexmap)
@@ -775,6 +783,7 @@ RawClusterContainer *clusters_hcalout = findNode::getClass<RawClusterContainer>(
   SvtxVertex* vtxhcout = vertexmap_hcalout->get(0);
   if (vtxhcout == nullptr)
     return;
+  */
 ////////////////////////////////////////////////////////////////////////////////////////////////
   
   RawClusterContainer::ConstRange begin_end_hcout = clusters_hcalout->getClusters();
@@ -789,8 +798,8 @@ RawClusterContainer *clusters_hcalout = findNode::getClass<RawClusterContainer>(
     const RawCluster *cluster_HCalOUT = clusIter_hout->second;
 
   /// Get cluster characteristics);
-
-  double m_ceta_hout = getEta(cluster_HCalOUT->get_r(),cluster_HCalOUT->get_z()-vtxhcout->get_z());
+  //double m_ceta_hout = getEta(cluster_HCalOUT->get_r(),cluster_HCalOUT->get_z()-vtxhcout->get_z()); //Vertex correction
+  double m_ceta_hout = getEta(cluster_HCalOUT->get_r(),cluster_HCalOUT->get_z());
   double m_cphi_hout = cluster_HCalOUT->get_phi();
 
 
@@ -983,6 +992,7 @@ void CalData::getEMCalClusters(PHCompositeNode *topNode)
   }
 
   /// Get the global vertex to determine the appropriate pseudorapidity of the clusters
+  /*
   GlobalVertexMap *vertexmap = findNode::getClass<GlobalVertexMap>(topNode, "GlobalVertexMap");
   if (!vertexmap)
   {
@@ -1001,6 +1011,8 @@ void CalData::getEMCalClusters(PHCompositeNode *topNode)
   GlobalVertex *vtx = vertexmap->begin()->second;
   if (vtx == nullptr)
     return;
+
+  */
 
   /// Trigger emulator
   CaloTriggerInfo *trigger = findNode::getClass<CaloTriggerInfo>(topNode, "CaloTriggerInfo");
