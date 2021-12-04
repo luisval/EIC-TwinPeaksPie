@@ -19,9 +19,12 @@ void Matching::Loop(){
    
     TFile* fout = new TFile(Form("G4EICDetector_out_test.root"),"RECREATE");
 
-   // TFile* fout = new TFile(Form("G4EICDetector_out_e_1-20GeV.root"),"RECREATE");
+  //  TFile* fout = new TFile(Form("G4EICDetector_out_pi_1-20GeV.root"),"RECREATE");
 
-//TFile *fout = new TFile("Ep_cut_revisited_G4EICDetector_out_hq2_pi_10-20GeV.root","RECREATE");
+//TFile *fout = new TFile("Ep_cut_revisited_G4EICDetector_out_hq2_pi_1-20GeV.root","RECREATE");
+
+ // TFile *fout = new TFile("HETow_cut_revisited_hq2_pi_1-20GeV.root","RECREATE");
+
 
   TH1F *h_dRmin = new TH1F("h_dRmin","dRmin",400,0,4);
         h_dRmin->SetFillColorAlpha(40, 0.35);
@@ -123,7 +126,24 @@ void Matching::Loop(){
         h_track_p_all->SetYTitle("Counts");
         h_track_p_all->GetXaxis()->CenterTitle(true);
         h_track_p_all->GetYaxis()->CenterTitle(true);
-        h_track_p_all->GetYaxis()->SetTitleOffset(1.2);        
+        h_track_p_all->GetYaxis()->SetTitleOffset(1.2);     
+
+
+  TH1F *h_truth_pt_all = new TH1F("h_truth_pt_all","Truth p all",40,0,20);
+        h_truth_pt_all->SetFillColorAlpha(40, 0.35);
+        h_truth_pt_all->SetXTitle("truth_pt");
+        h_truth_pt_all->SetYTitle("Counts");
+        h_truth_pt_all->GetXaxis()->CenterTitle(true);
+        h_truth_pt_all->GetYaxis()->CenterTitle(true);
+        h_truth_pt_all->GetYaxis()->SetTitleOffset(1.2);        
+ 
+  TH1F *h_truth_pt = new TH1F("h_truth_pt","truth pt",40,0,20);
+        h_truth_pt->SetFillColorAlpha(40, 0.35);
+        h_truth_pt->SetXTitle("truth_pt");
+        h_truth_pt->SetYTitle("Counts");
+        h_truth_pt->GetXaxis()->CenterTitle(true);
+        h_truth_pt->GetYaxis()->CenterTitle(true);
+        h_truth_pt->GetYaxis()->SetTitleOffset(1.2);                       
               
    Long64_t nbytes = 0, nb = 0;
 
@@ -150,76 +170,94 @@ void Matching::Loop(){
 
         if(abs(track_eta->at(j))>1.0) continue; //cut pseudorapidity 
          //  cout << "track eta:  " << track_eta->at(j)<< endl;
-        
-           if(abs(track_p->at(j))<1.0) continue;
-         //  if(abs(track_p->at(j))>20.0) continue;
+
+           if(abs(truth_p->at(j))<1) continue; //Swiched from track_p to truth_p to fix bining problem
+           if(abs(truth_p->at(j))>3) continue;
          // if(abs(track_p->at(j))<10) continue;
-      //   cout << "track p:  " << track_p->at(j)<< endl;    
+         // cout << "track p:  " << track_p->at(j)<< endl;    
 
        // dR and resolutions
-       int idx_dR, idx_dEta, idx_dPhi, dummy, idx_dR_tow, idx_dR_track;
+       int idx_dR, idx_dEta, idx_dPhi, dummy, idx_dR_tow, idx_dR_track;      
         
-       //  if (tr_CEMC_eta->at(j)==9999.) continue;
-          
-        //   if (track_id->at(j)!=11) continue; //Turn on for electrons
+      // if (track_id->at(j)!=11) continue; //Turn on for electrons
        if (track_id->at(j)!=-211) continue; //Turn on for pions
-      //if (track_id->at(j)!=-321) continue; //Turn on for kaons
+       //if (track_id->at(j)!=-321) continue; //Turn on for kaons
+       //if (track_id->at(j)!=-2212) continue; //Turn on for antiprotons
          
            // h_track_p_all->Fill(track_p->at(j)); //All from the track
-           h_track_p_all->Fill(truth_p->at(j)); //All form the truth
+           h_track_p_all->Fill(truth_p->at(j)); //All from the truth
+           h_truth_pt_all->Fill(truth_pt->at(j));
 
           // cout << "truth id:  " << truth_pid->at(j) << endl;
-           cout << "pid:  " << track_id->at(j) << endl;
+          // cout << "pid:  " << track_id->at(j) << endl;
 
-         h_truth_p_track_p->Fill(track_p->at(j),truth_p->at(j));       
+           h_truth_p_track_p->Fill(track_p->at(j),truth_p->at(j));       
 
-         idx_dR  =0;
-       //  h_dRmin->Fill( dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) ); //Tracks-clusters    
+           idx_dR  =0;
+         // h_dRmin->Fill( dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) ); //Tracks-clusters    
 
-        if( dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) > 0.07) continue; //dR cut clusters_tracks
+      if( dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) > 0.07) continue; //dR cut clusters_tracks
       //  cout << "dR:  " << dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) << endl;
 
        //  idx_dR  =0;
-       //  h_dRmin->Fill( dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) ); //Tracks-clusters
+         h_dRmin->Fill( dRmin(tr_CEMC_eta->at(j), tr_CEMC_phi->at(j), idx_dR) ); //Tracks-clusters
      
          float scaleE = 0.8;
          float Ep0 = clus_energy->at(idx_dR)/track_p->at(j);
          float Ep = Ep0/scaleE;
 
-       // if (Ep<0.89) continue; //Turn on for 1-5 GeV
-       //  if (Ep<0.92) continue; //Turn on for 5-10 GeV
-      // if (Ep<0.90) continue; //Turn on for 10-20 GeV
-         if (Ep<0.91) continue; //Turn on for 1-20 GeV
 
-         if (Ep> 1.1) continue; //Upper limit
+        if (Ep<0.4) continue; //Turn on for 1-3 GeV
+        // if (Ep<0.89) continue; //Turn on for 3-5 GeV
+      // if (Ep<0.92) continue; //Turn on for 5-7.5 GeV
+      //  if (Ep<0.91) continue; //Turn on for 7.5-10 GeV
+       // if (Ep<0.92) continue; //Turn on for 10-12.5 GeV
+       // if (Ep<0.89) continue; //Turn on for 12.5-15 GeV
+       // if (Ep<0.85) continue; //Turn on for 15-17.5 GeV
+       // if (Ep<0.82) continue; //Turn on for 17.5-20 GeV
+       // if (Ep<0.90) continue; //Turn on for 1-20 GeV
 
+        if (Ep> 1.1) continue; //Upper limit
         // cout << "Ep:  " << Ep << endl;
 
-         h_EMCal_Ep->Fill(Ep);
-         h_EMCal_E->Fill(clus_energy->at(idx_dR));
-
-       //  if(Ep < 0.2){ 
+          h_EMCal_Ep->Fill(Ep);
+          h_EMCal_E->Fill(clus_energy->at(idx_dR));
 
           h_track_eta->Fill(track_eta->at(j));
           ///h_track_p->Fill(track_p->at(j)); 
-                    h_track_p->Fill(truth_p->at(j)); 
-
+          h_track_p->Fill(truth_p->at(j)); 
+        
           h_truth_p->Fill(truth_p->at(j)); 
-         // h_truth_p_track_p->Fill(track_p->at(j),truth_p->at(j));       
-       //  }
+          h_truth_pt->Fill(truth_pt->at(j)); 
+
          dRmin_tow(clus_eta->at(idx_dR), clus_phi->at(idx_dR), idx_dR_tow );
 
          float E_tow = towenergy->at(idx_dR_tow);
          float  Ep_tow = towenergy->at(idx_dR_tow)/track_p->at(j);
          float tow_clus_E = towenergy->at(idx_dR_tow)/clus_energy->at(idx_dR);
        //  cout << "E tow:" << E_tow << endl;
-          
+
+///////////////////////HCal cut/////////////////////////////////////////////////
+
+        if (E_tow>0.1) continue; //Turn on for 1-3 GeV
+       // if (E_tow>0.06) continue; //Turn on for 3-5 GeV
+       // if (E_tow>0.06 ) continue; //Turn on for 5-7.5 GeV
+       //   if (E_tow>0.06 ) continue; //Turn on for 7.5-10 GeV
+       // if (E_tow>0.06) continue; //Turn on for 10-12.5 GeV
+      //  if (E_tow>0.10) continue; //Turn on for 12.5-15 GeV
+      //  if (E_tow>0.18) continue; //Turn on for 15-17.5 GeV
+      //  if (E_tow>0.24) continue; //Turn on for 17.5-20 GeV
+      //  if (E_tow>0.08) continue; //Turn on for 1-20 GeV
+ 
+     //    cout << "Etow:  " << E_tow << endl;
+
+/////////////////////////////////////////////////////////////////////////////////          
           h_tow_E->Fill(E_tow);     
           h_tow_Ep->Fill(Ep_tow);
           h_towclus_E->Fill(tow_clus_E); 
-      //    h_track_p->Fill(track_p->at(j)); 
+         // h_track_p->Fill(track_p->at(j)); 
           h_track_pt->Fill(track_pt->at(j)); 
-     //     h_track_eta->Fill(track_eta->at(j)); 
+         // h_track_eta->Fill(track_eta->at(j)); 
             
        } //End of tracks loop
                               
@@ -242,6 +280,7 @@ h_track_pt->Write();
 h_track_eta->Write();
 
 h_track_p_all->Write();
+//h_truth_p_all->Write();
 
 h_truth_p->Write();
 h_truth_p_track_p->Write();
